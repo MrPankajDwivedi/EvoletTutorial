@@ -29,7 +29,12 @@ public class MainActivity extends AppCompatActivity {
         LL2=(LinearLayout) findViewById(R.id.idLL2);
         btn=(Button) findViewById(R.id.btnTest1);
         btn2=(Button) findViewById(R.id.btn2);
-
+btn2.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        startActivity(new Intent(MainActivity.this,SongsListActivity.class));
+    }
+});
        // btn2.setOnClickListener((View.OnClickListener) this);
 
         sp=(Spinner) findViewById(R.id.spinner1);
@@ -59,11 +64,4 @@ public class MainActivity extends AppCompatActivity {
         sp.setAdapter(dataAdapter);
     }
 
-    public void testMethod(View v){
-
-    }
-   /* @Override
-    public void onClick(View v){
-
-    }*/
 }
