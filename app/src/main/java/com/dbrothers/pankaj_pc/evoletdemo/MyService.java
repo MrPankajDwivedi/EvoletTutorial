@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,13 +38,24 @@ public class MyService extends Service {
     public void onCreate() {
         Toast.makeText(this, "Service Created", Toast.LENGTH_LONG).show();
 
-        myPlayer = MediaPlayer.create(this, R.raw.ipl);
-        myPlayer.setLooping(false); // Set looping
+        myPlayer = MediaPlayer.create(this, Uri.parse(Environment.getExternalStorageDirectory().getPath()+ "/Download/be_the_one.mp3"));
+        myPlayer.setLooping(true); // Set looping
     }
     @Override
     public void onStart(Intent intent, int startid) {
         Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+
+        getAllAudioFromDevice(getApplicationContext());
         myPlayer.start();
+        try {
+            myPlayer.reset();
+            myPlayer.setDataSource(getAllAudioFromDevice(getApplicationContext()).get(0).getaPath());
+            myPlayer.prepare();
+            myPlayer.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
     @Override
@@ -79,7 +91,7 @@ public class MyService extends Service {
                 audioModel.setaArtist(artist);
                 audioModel.setaPath(path);
 
-                Log.e("Name :" + name, " Album :" + album);
+                Log.e("Service Name :" + name, " Album :" + album);
                 Log.e("Path :" + path, " Artist :" + artist);
 
                 tempAudioList.add(audioModel);
